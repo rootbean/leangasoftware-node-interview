@@ -1,0 +1,8 @@
+{
+    "extends": "airbnb",
+    "rules": {
+        "no-useless-escape": 0,
+        "linebreak-style": 0,
+        "no-underscore-dangle": 0
+    }
+}

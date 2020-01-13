@@ -1,0 +1,6 @@
+
+.envrc
+.env
+.env-linux
+app.yaml
+node_modules

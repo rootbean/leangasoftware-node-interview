@@ -1,0 +1,53 @@
+{
+    "name": "node-interview",
+    "version": "1.0.0",
+    "description": "API Node Interview - leangasoftware",
+    "main": "./bin/server.js",
+    "directories": {
+        "test": "test"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start:local": "nodemon -r dotenv/config ./bin/server.js",
+        "start": "node ./bin/server.js",
+        "eslint": "./node_modules/.bin/eslint ."
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/rootbean/leangasoftware-node-interview.git"
+    },
+    "author": "Ruber Rodríguez V <ruber19@gmail.com>",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/rootbean/leangasoftware-node-interview/issues"
+    },
+    "homepage": "https://github.com/rootbean/leangasoftware-node-interview#readme",
+    "dependencies": {
+        "@hapi/boom": "^7.4.2",
+        "@hapi/glue": "^6.1.0",
+        "@hapi/hapi": "^18.3.1",
+        "@hapi/hoek": "^8.0.2",
+        "@hapi/inert": "^5.2.1",
+        "@hapi/joi": "^15.1.0",
+        "@hapi/vision": "^5.5.2",
+        "blipp": "^4.0.0",
+        "csvtojson": "^2.0.10",
+        "dotenv": "^8.0.0",
+        "hapi-alive": "^2.0.3",
+        "hapi-swagger": "^10.0.2",
+        "jsonwebtoken": "^8.5.1",
+        "moment": "^2.24.0",
+        "mongoose": "^5.6.0",
+        "uuid": "^3.3.2"
+    },
+    "devDependencies": {
+        "commitizen": "^4.0.3",
+        "eslint": "^6.8.0",
+        "eslint-config-airbnb": "^18.0.1",
+        "eslint-config-airbnb-base": "^14.0.0",
+        "eslint-plugin-import": "^2.20.0",
+        "eslint-plugin-jsx-a11y": "^6.2.3",
+        "eslint-plugin-react": "^7.17.0",
+        "nodemon": "^2.0.2"
+    }
+}
