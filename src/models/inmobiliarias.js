@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const InmobiliariasSchema = new Schema({
+const InmobiliariaSchema = new Schema({
   id: { type: String, required: true },
   location: {
     type: {
@@ -26,7 +26,7 @@ const InmobiliariasSchema = new Schema({
   description: { type: String },
   reformed: { type: Boolean, default: false },
   phone: { type: String },
-  type: {
+  typeA: {
     type: String,
     required: [true, 'El tipo es requerido'],
   },
@@ -98,4 +98,4 @@ const InmobiliariasSchema = new Schema({
 
 });
 
-module.exports = mongoose.model('Inmobiliaria', InmobiliariasSchema);
+module.exports = mongoose.model('Inmobiliaria', InmobiliariaSchema);

@@ -43,33 +43,6 @@ exports.findById = async (id, where = {}) => {
   }
 };
 
-exports.update = async (id, payload) => {
-  try {
-    return await DataModel.updateOne({ _id: id }, payload);
-  } catch (ex) {
-    error(`error: ${ex}`);
-    throw ex;
-  }
-};
-
-exports.disabled = async (id) => {
-  try {
-    return await DataModel.updateOne({ _id: id }, { active: false });
-  } catch (ex) {
-    error(`error: ${ex}`);
-    throw ex;
-  }
-};
-
-exports.active = async (id) => {
-  try {
-    return await DataModel.updateOne({ _id: id }, { active: true });
-  } catch (ex) {
-    error(`error: ${ex}`);
-    throw ex;
-  }
-};
-
 /**
  * @description consulta con paginación
  * @param pag
@@ -94,17 +67,13 @@ exports.paginate = async (pag, cantByPage, whereQuery = {}) => {
     }
 
     const newWhere = {
-      price: { $gt: priceMin, $lt: priceMax },
+      price: { $gte: priceMin, $lte: priceMax },
     };
 
     if (whereQuery.rooms) {
       newWhere.rooms = whereQuery.rooms;
     }
-
-    console.log('WHERE: ', newWhere);
-
-    const resultData = await DataModel.find({})
-      .where('price').lte(priceMax)
+    const resultData = await DataModel.find(newWhere)
       .skip(skip)
       .limit(qtyPerPage)
       .exec();

@@ -45,33 +45,6 @@ exports.plugin.register = async (server) => {
     }
   });
 
-  server.method('updateInmobiliarias', async (id, payload) => {
-    try {
-      return await dataOrm.update(id, payload);
-    } catch (ex) {
-      error(`error: ${ex}`);
-      throw ex;
-    }
-  });
-
-  server.method('disabledInmobiliaria', async (id) => {
-    try {
-      return await dataOrm.disabled(id);
-    } catch (ex) {
-      error(`error: ${ex}`);
-      throw ex;
-    }
-  });
-
-  server.method('activeInmobiliaria', async (id) => {
-    try {
-      return await dataOrm.active(id);
-    } catch (ex) {
-      error(`error: ${ex}`);
-      throw ex;
-    }
-  });
-
   server.method('paginateInmobiliarias', async (pag, cantByPage, where) => {
     try {
       return await dataOrm.paginate(pag, cantByPage, where);
