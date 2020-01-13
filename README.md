@@ -21,7 +21,7 @@ Run npm run start:local
 
 - La documentación del API (en local) se encuentra en http://localhost:3001/api/v1/documentation
 
-- La documentación del API (en producción) se encuentra en https://node-interview-ruber.appspot.com/api/v1/documentation
+- La documentación del API (en producción) se encuentra en https://node-interview-ruber-265022.appspot.com/api/v1/documentation
 
 - La base de datos Mongo, se encuentra en Cloud Mongo y es para realizar los test desde local.
 
