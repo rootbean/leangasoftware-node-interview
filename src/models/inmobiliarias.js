@@ -25,7 +25,7 @@ const InmobiliariaSchema = new Schema({
   },
   description: { type: String },
   reformed: { type: Boolean, default: false },
-  phone: { type: String },
+  phones: { type: String },
   typeA: {
     type: String,
     required: [true, 'El tipo es requerido'],

@@ -54,6 +54,15 @@ exports.plugin.register = async (server) => {
     }
   });
 
+  server.method('getInmobiliariaFilterLocation', async (where) => {
+    try {
+      return await dataOrm.filterLocation(where);
+    } catch (ex) {
+      error(`error: ${ex}`);
+      throw ex;
+    }
+  });
+
   server.method('paginateInmobiliarias', async (pag, cantByPage, where) => {
     try {
       return await dataOrm.paginate(pag, cantByPage, where);

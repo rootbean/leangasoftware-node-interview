@@ -5,6 +5,12 @@ const jwtExp = new RegExp('^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]
 exports.idModel = Joi.string().required().description('id')
   .example('asdasdsaasasdds');
 
+exports.typeFileValid = Joi.string().required().description('tipo de documento')
+  .valid('pdf', 'csv')
+  .lowercase({ force: true })
+  .default('csv')
+  .example('pdf');
+
 exports.geoModel = Joi.number().required().description('dato geoespacial')
   .example(-30);
 

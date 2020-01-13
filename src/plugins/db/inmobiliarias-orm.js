@@ -113,10 +113,31 @@ exports.averagePrice = async (where = {}) => {
       },
     };
 
-    const data = await DataModel.find(newWhere);
+    const data = await DataModel.find(newWhere).exec();
     const result = data.reduce((total, item) => total + item.priceMeter, 0);
     const averagePriceMeter = data.length > 0 ? Number((result / data.length).toFixed(2)) : 0;
     return averagePriceMeter;
+  } catch (ex) {
+    error(`error: ${ex}`);
+    throw ex;
+  }
+};
+
+exports.filterLocation = async (where = {}) => {
+  try {
+    const newWhere = {
+      location: {
+        $nearSphere: {
+          $geometry: {
+            type: 'Point',
+            coordinates: [where.longitude, where.latitude],
+          },
+          $maxDistance: where.distance * 1000,
+        },
+      },
+    };
+
+    return await DataModel.find(newWhere).exec();
   } catch (ex) {
     error(`error: ${ex}`);
     throw ex;

@@ -1,10 +1,18 @@
-const { badImplementation } = require('@hapi/boom');
+const { badImplementation, conflict } = require('@hapi/boom');
 const { name, version } = require('../../../package.json');
 const { pagintationInmobiliariasValidate } = require('../../schemas/pagination');
-const { idModel, geoModel, urlFile } = require('../../schemas/others');
+const {
+  idModel,
+  geoModel,
+  urlFile,
+  typeFileValid,
+} = require('../../schemas/others');
 const { handleError } = require('../../utils/handle-error');
 const { readFile } = require('../../utils/read-file');
 const { convertFile } = require('../../utils/convert-file');
+const { writeFileCSV } = require('../../utils/write-file-csv');
+const { parserFile } = require('../../utils/parser-file');
+const { writeFilePDF } = require('../../utils/write-file-pdf');
 
 const { log, error } = console;
 
@@ -110,6 +118,55 @@ exports.plugin.register = async (server) => {
         return h.response({ averagePriceMeter: response, message: 'Promedio del precio por metro cuadrado hallado correctamente!' }).code(200);
       } catch (e) {
         error('error al encontrar el promedio', e);
+        return badImplementation('process failed');
+      }
+    },
+  });
+
+  // filter location
+  server.route({
+    path: '/inmobiliarias/filter-location/{latitude}/{longitude}/{distance}/{typeFile}',
+    method: 'GET',
+    options: {
+      description: 'Obtener precio promedio por distancia',
+      tags: ['api'],
+      validate: {
+        params: {
+          latitude: geoModel,
+          longitude: geoModel,
+          distance: geoModel,
+          typeFile: typeFileValid,
+        },
+        failAction: handleError,
+      },
+      pre: [{
+        assign: 'log',
+        method: async (request) => {
+          log(request.path, 'at', Date.now());
+          return true;
+        },
+      }],
+    },
+    handler: async (request, h) => {
+      try {
+        const { params } = request;
+        const where = {
+          latitude: params.latitude,
+          longitude: params.longitude,
+          distance: params.distance,
+        };
+        const response = await server.methods.getInmobiliariaFilterLocation(where);
+        const resultParserFile = await parserFile(response);
+        if (params.typeFile === 'csv') {
+          await writeFileCSV(resultParserFile);
+        } else if (params.typeFile === 'pdf') {
+          await writeFilePDF(resultParserFile);
+        } else {
+          return conflict('El tipo de formato para generar el archivo no exite!');
+        }
+        return h.response({ message: 'El archivo fue creado correctamente!' }).code(200);
+      } catch (e) {
+        error('error al crear el archivo', e);
         return badImplementation('process failed');
       }
     },
