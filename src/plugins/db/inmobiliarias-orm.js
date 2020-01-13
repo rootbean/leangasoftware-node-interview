@@ -98,3 +98,27 @@ exports.paginate = async (pag, cantByPage, whereQuery = {}) => {
     throw ex;
   }
 };
+
+exports.averagePrice = async (where = {}) => {
+  try {
+    const newWhere = {
+      location: {
+        $nearSphere: {
+          $geometry: {
+            type: 'Point',
+            coordinates: [where.longitude, where.latitude],
+          },
+          $maxDistance: where.distance * 1000,
+        },
+      },
+    };
+
+    const data = await DataModel.find(newWhere);
+    const result = data.reduce((total, item) => total + item.priceMeter, 0);
+    const averagePriceMeter = data.length > 0 ? Number((result / data.length).toFixed(2)) : 0;
+    return averagePriceMeter;
+  } catch (ex) {
+    error(`error: ${ex}`);
+    throw ex;
+  }
+};

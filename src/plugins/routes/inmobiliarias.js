@@ -1,7 +1,7 @@
 const { badImplementation } = require('@hapi/boom');
 const { name, version } = require('../../../package.json');
 const { pagintationInmobiliariasValidate } = require('../../schemas/pagination');
-const { idModel, urlFile } = require('../../schemas/others');
+const { idModel, geoModel, urlFile } = require('../../schemas/others');
 const { handleError } = require('../../utils/handle-error');
 const { readFile } = require('../../utils/read-file');
 const { convertFile } = require('../../utils/convert-file');
@@ -70,6 +70,46 @@ exports.plugin.register = async (server) => {
         return h.response({ data: response, message: 'Inmueble encontrado' }).code(200);
       } catch (e) {
         error('error al encontrar el inmueble', e);
+        return badImplementation('process failed');
+      }
+    },
+  });
+
+  // average price
+  server.route({
+    path: '/inmobiliarias/{latitude}/{longitude}/{distance}',
+    method: 'GET',
+    options: {
+      description: 'Obtener precio promedio por distancia',
+      tags: ['api'],
+      validate: {
+        params: {
+          latitude: geoModel,
+          longitude: geoModel,
+          distance: geoModel,
+        },
+        failAction: handleError,
+      },
+      pre: [{
+        assign: 'log',
+        method: async (request) => {
+          log(request.path, 'at', Date.now());
+          return true;
+        },
+      }],
+    },
+    handler: async (request, h) => {
+      try {
+        const { params } = request;
+        const where = {
+          latitude: params.latitude,
+          longitude: params.longitude,
+          distance: params.distance,
+        };
+        const response = await server.methods.getInmobiliariaByGEO(where);
+        return h.response({ averagePriceMeter: response, message: 'Promedio del precio por metro cuadrado hallado correctamente!' }).code(200);
+      } catch (e) {
+        error('error al encontrar el promedio', e);
         return badImplementation('process failed');
       }
     },

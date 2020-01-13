@@ -98,4 +98,6 @@ const InmobiliariaSchema = new Schema({
 
 });
 
+InmobiliariaSchema.index({ location: '2dsphere' });
+
 module.exports = mongoose.model('Inmobiliaria', InmobiliariaSchema);

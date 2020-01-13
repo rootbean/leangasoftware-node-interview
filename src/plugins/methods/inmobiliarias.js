@@ -45,6 +45,15 @@ exports.plugin.register = async (server) => {
     }
   });
 
+  server.method('getInmobiliariaByGEO', async (where) => {
+    try {
+      return await dataOrm.averagePrice(where);
+    } catch (ex) {
+      error(`error: ${ex}`);
+      throw ex;
+    }
+  });
+
   server.method('paginateInmobiliarias', async (pag, cantByPage, where) => {
     try {
       return await dataOrm.paginate(pag, cantByPage, where);
